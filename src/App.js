@@ -14,15 +14,16 @@ class App extends Component {
       garbageCategoriesAll: [],
       garbageCategoriesBlueBin: [],
       garbageCategoriesGarbage: [],
+      garbageListToShow: [],
     }
     console.log('constructor');
   }
+
 
   //I need to sort through my array of categories to find all the ones that have a blue Bin
   categorySorter = (fullArray, sortType) => {
     let garbageTypeBlueBin = /blue.bin/gi;
     let garbageTypeGarbage = /garbage/gi;
-
     let updatedCategoryArray = [];
     // console.log(fullArray)
 
@@ -52,6 +53,27 @@ class App extends Component {
 
     return (updatedCategoryArray)
   }
+
+  //I need to copy what array I need to show
+
+  handleClickForBlueBin = (event) => {
+    event.preventDefault();
+    console.log('hello')
+    this.setState({
+      garbageListToShow: this.state.garbageCategoriesBlueBin
+
+    })
+  }
+
+  handleClickForGarbage = (event) => {
+    event.preventDefault();
+    console.log('hello1')
+    this.setState({
+      garbageListToShow: this.state.garbageCategoriesGarbage
+    })
+  }
+
+
 
   //This is where I should put my axios call
   componentDidMount() {
@@ -86,32 +108,39 @@ class App extends Component {
 
   //refresh when setState is called
   render() {
+
     return (
       <div className='App'>
+
         {this.state.isLoading ? (
           //if this loading statement is false, info goes here
           <p>Loading...</p>
         ) : (
+
             <ul>
-              {this.state.garbageCategoriesBlueBin.map((category, i) => {
+              {/* {
+                <BlueBin copyArrayFunction={() =>{this.arrayCopyToShow(this.state.garbageCategoriesBlueBin)}} />
+              }
+              {
+                <GarbageBin copyArrayFunction={() => { this.arrayCopyToShow(this.state.garbageCategoriesGarbage) }}/>
+              } */}
+
+              {
+                <button onClick={this.handleClickForBlueBin}>BlueBin</button>
+              }
+              {
+                <button onClick={this.handleClickForGarbage}>Garbage</button>
+              }
+
+              {/* {
+                <button onClick={this.arrayCopyToShow(this.state.garbageCategoriesGarbage)}>Garbage :(</button>
+              } */}
+
+              {this.state.garbageListToShow.map((category, i) => {
                 return (
                   <li key={i}>{category.title}</li>
                 )
               })}
-
-              {this.state.garbageCategoriesGarbage.map((category, i) => {
-                return (
-                  <li key={i}>{category.title}</li>
-                )
-              })}
-
-              {/* {this.state.garbageCategories.map((garbage, i) => {
-                return (
-                  <li>
-                    <p>{garbage[i]}</p>
-                  </li>
-                )
-              })} */}
             </ul>
           )
         }
