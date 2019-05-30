@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import BlueBin from './BlueBin.js';
+import GarbageBin from './GarbageBin.js';
 import axios from 'axios';
 import './App.css';
 
@@ -9,7 +11,7 @@ class App extends Component {
     super();
     this.state = {
       isLoading: true,
-      temporaryItems:[],
+      garbageCategories: [],
     }
     console.log('constructor');
   }
@@ -19,7 +21,8 @@ class App extends Component {
     console.log('Mounted');
     //created ajax request
     axios({
-      url: 'https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=1000',
+      //The API has no other way of sending exact data. I need to call the whole database.
+      url: 'https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=250',
       method: 'GET',
       headers: {
         UserAgent: "PostmanRuntime/7.13.0",
@@ -30,9 +33,12 @@ class App extends Component {
         cachecontrol: "no-cache"
       }
     }).then((response) => {
-      console.log(response.data);
+      // response.data.forEach((elt, i) => console.log(i, elt));
+      response = response.data;
+      console.log(`the length ${response.length}`)
       this.setState({
-        temporaryItems: [...response.data],
+        garbageCategories: [response],
+
         isLoading: false,
       })
     })
@@ -42,25 +48,37 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
-        {this.state.isLoading ?
-          //pre loader here
-          <p>Loading...</p> :
+        {this.state.isLoading ? (
+          //if this loading statement is false, info goes here
+          <p>Loading...</p>
+        ) : (
 
-        //after the preloader, code goes under here
-          console.log('here I am')
+            <ul>
 
-          
 
-          // this.state.art.map((item) => {
-          //   return (
-          //     <div key={item.id} className="art-item">
-          //       <h2>{item.title}</h2>
-          //       <img src={item.headerImage.url} alt={item.title} />
-          //     </div>
-          //   )
-          // })
+              {/* {console.log(this.state.garbageCategories)} */}
+              {this.state.garbageCategories[0].map((category, i) =>{
+                return(
+                  
+                  <li key = {i}>{category.title}</li>
+                )
+                
 
+              })}
+
+              {/* {this.state.garbageCategories.map((garbage, i) => {
+                return (
+                  <li>
+                    <p>{garbage[i]}</p>
+                  </li>
+                )
+              })} */}
+            </ul>
+          )
         }
+        )
+      }
+
       </div>
     ); //bracket for return
   } //Bracket for render
