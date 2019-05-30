@@ -4,7 +4,7 @@ class GarbageBin extends Component{
     render(){
         return(
             <div>
-
+                
             </div>
         )//Close Return
     }//Close Render

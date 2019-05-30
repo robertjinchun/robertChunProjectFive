@@ -11,9 +11,46 @@ class App extends Component {
     super();
     this.state = {
       isLoading: true,
-      garbageCategories: [],
+      garbageCategoriesAll: [],
+      garbageCategoriesBlueBin: [],
+      garbageCategoriesGarbage: [],
     }
     console.log('constructor');
+  }
+
+  //I need to sort through my array of categories to find all the ones that have a blue Bin
+  categorySorter = (fullArray, sortType) => {
+    let garbageTypeBlueBin = /blue.bin/gi;
+    let garbageTypeGarbage = /garbage/gi;
+
+    let updatedCategoryArray = [];
+    // console.log(fullArray)
+
+    fullArray.map((item, i) => {
+      // console.log(item)
+      if (sortType === 'blueBin') {
+        if (garbageTypeBlueBin.exec(item.category)) {
+          // console.log(item)
+          updatedCategoryArray.push(item);
+          // console.log(updatedCategoryArray)
+        }
+      }
+      if (sortType === 'garbage') {
+        if (garbageTypeGarbage.exec(item.category)) {
+          // console.log(item)
+          updatedCategoryArray.push(item);
+          // console.log(updatedCategoryArray)
+        }
+      }
+
+      return (
+        updatedCategoryArray
+      )
+
+    })
+
+
+    return (updatedCategoryArray)
   }
 
   //This is where I should put my axios call
@@ -35,10 +72,13 @@ class App extends Component {
     }).then((response) => {
       // response.data.forEach((elt, i) => console.log(i, elt));
       response = response.data;
-      console.log(`the length ${response.length}`)
-      this.setState({
-        garbageCategories: [response],
+      // let category = this.categorySorter(response);
+      // console.log(this.categorySorter(response))
 
+      this.setState({
+        garbageCategoriesAll: response,
+        garbageCategoriesBlueBin: this.categorySorter(response, "blueBin"),
+        garbageCategoriesGarbage: this.categorySorter(response, "garbage"),
         isLoading: false,
       })
     })
@@ -52,18 +92,17 @@ class App extends Component {
           //if this loading statement is false, info goes here
           <p>Loading...</p>
         ) : (
-
             <ul>
-
-
-              {/* {console.log(this.state.garbageCategories)} */}
-              {this.state.garbageCategories[0].map((category, i) =>{
-                return(
-                  
-                  <li key = {i}>{category.title}</li>
+              {this.state.garbageCategoriesBlueBin.map((category, i) => {
+                return (
+                  <li key={i}>{category.title}</li>
                 )
-                
+              })}
 
+              {this.state.garbageCategoriesGarbage.map((category, i) => {
+                return (
+                  <li key={i}>{category.title}</li>
+                )
               })}
 
               {/* {this.state.garbageCategories.map((garbage, i) => {
