@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import BlueBin from './BlueBin.js';
-import GarbageBin from './GarbageBin.js';
+import swal from '@sweetalert/with-react'
+// import BlueBin from './BlueBin.js';
+// import GarbageBin from './GarbageBin.js';
 import axios from 'axios';
 import './App.css';
 
@@ -11,6 +12,8 @@ class App extends Component {
     super();
     this.state = {
       isLoading: true,
+      ButtonblueBin: false,
+      ButtonGarbageBin: false,
       garbageCategoriesAll: [],
       garbageCategoriesBlueBin: [],
       garbageCategoriesGarbage: [],
@@ -60,6 +63,8 @@ class App extends Component {
     event.preventDefault();
     console.log('hello')
     this.setState({
+      ButtonblueBin: true,
+      ButtonGarbageBin: false,
       garbageListToShow: this.state.garbageCategoriesBlueBin
 
     })
@@ -69,11 +74,51 @@ class App extends Component {
     event.preventDefault();
     console.log('hello1')
     this.setState({
+      ButtonblueBin: false,
+      ButtonGarbageBin: true,
       garbageListToShow: this.state.garbageCategoriesGarbage
     })
   }
 
+  handleClickForItems = (index, event) => {
+    event.preventDefault();
+    // console.log(this.state.garbageCategoriesGarbage)
+    console.log(index);
+    console.log(this.state.ButtonblueBin);
+    console.log(this.state.GarbageBin);
+    if (this.state.ButtonGarbageBin){
+      swal(
+      <div>
+          <h2>{this.state.garbageCategoriesGarbage[index].title}</h2>
+        <p>
+            {this.state.garbageCategoriesGarbage[index].category}
+          </p>
+        <p>
+            {this.state.garbageCategoriesGarbage[index].body}
+          </p>
+      </div>
+      )
+    } else if (this.state.ButtonBlueBin){
+      swal(
+        <div>
+          <h2>{this.state.garbageCategoriesBlueBin[index].title}</h2>
+          <p>
+            {this.state.garbageCategoriesBlueBin[index].category}
+          </p>
+          <p>
+            {this.state.garbageCategoriesBlueBin[index].body}
+          </p>
+        </div>
+      )
+    }
 
+    
+    
+
+    this.setState({
+      // garbageListToShow: this.state.garbageCategoriesGarbage
+    })
+  }
 
   //This is where I should put my axios call
   componentDidMount() {
@@ -118,12 +163,6 @@ class App extends Component {
         ) : (
 
             <ul>
-              {/* {
-                <BlueBin copyArrayFunction={() =>{this.arrayCopyToShow(this.state.garbageCategoriesBlueBin)}} />
-              }
-              {
-                <GarbageBin copyArrayFunction={() => { this.arrayCopyToShow(this.state.garbageCategoriesGarbage) }}/>
-              } */}
 
               {
                 <button onClick={this.handleClickForBlueBin}>BlueBin</button>
@@ -132,21 +171,14 @@ class App extends Component {
                 <button onClick={this.handleClickForGarbage}>Garbage</button>
               }
 
-              {/* {
-                <button onClick={this.arrayCopyToShow(this.state.garbageCategoriesGarbage)}>Garbage :(</button>
-              } */}
-
               {this.state.garbageListToShow.map((category, i) => {
                 return (
-                  <li key={i}>{category.title}</li>
+                  <li key={i} onClick={this.handleClickForItems.bind(this, i)}>{category.title}</li>
                 )
               })}
             </ul>
           )
         }
-        )
-      }
-
       </div>
     ); //bracket for return
   } //Bracket for render
