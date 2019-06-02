@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import logo from './logo.svg';
 import swal from '@sweetalert/with-react'
 // import BlueBin from './BlueBin.js';
 // import GarbageBin from './GarbageBin.js';
 import axios from 'axios';
 import './App.css';
+
+
 
 
 class App extends Component {
@@ -14,6 +17,7 @@ class App extends Component {
       isLoading: true,
       ButtonblueBin: false,
       ButtonGarbageBin: false,
+      UserInputString: '',
       garbageCategoriesAll: [],
       garbageCategoriesBlueBin: [],
       garbageCategoriesGarbage: [],
@@ -25,34 +29,33 @@ class App extends Component {
 
   //I need to sort through my array of categories to find all the ones that have a blue Bin
   categorySorter = (fullArray, sortType) => {
-    let garbageTypeBlueBin = /blue.bin/gi;
-    let garbageTypeGarbage = /garbage/gi;
-    let updatedCategoryArray = [];
+    const regexTruthygarbageTypeBlueBin = /blue.bin/gi;
+    const regexTruthygarbageTypeGarbage = /garbage/gi;
+    const regexCutBlueBin = /blue.bin|\(|\)/gi;
+    const regexCutGarbage = /garbage|\(|\)/gi;
+
+    const updatedCategoryArray = [];
     // console.log(fullArray)
 
     fullArray.map((item, i) => {
       // console.log(item)
       if (sortType === 'blueBin') {
-        if (garbageTypeBlueBin.exec(item.category)) {
-          // console.log(item)
+        if (regexTruthygarbageTypeBlueBin.exec(item.category)) {
+          item.title = item.title.replace(regexCutBlueBin, '');
           updatedCategoryArray.push(item);
-          // console.log(updatedCategoryArray)
         }
       }
       if (sortType === 'garbage') {
-        if (garbageTypeGarbage.exec(item.category)) {
-          // console.log(item)
+        if (regexTruthygarbageTypeGarbage.exec(item.category)) {
+          item.title = item.title.replace(regexCutGarbage, '');
           updatedCategoryArray.push(item);
-          // console.log(updatedCategoryArray)
         }
       }
 
       return (
         updatedCategoryArray
       )
-
     })
-
 
     return (updatedCategoryArray)
   }
@@ -80,40 +83,44 @@ class App extends Component {
     })
   }
 
+  handleInputBoxInput = (event) => {
+    this.setState({ title: event.target.value })
+  }
+
   handleClickForItems = (index, event) => {
     event.preventDefault();
     // console.log(this.state.garbageCategoriesGarbage)
     console.log(index);
     console.log(this.state.ButtonblueBin);
     console.log(this.state.GarbageBin);
-    if (this.state.ButtonGarbageBin){
+    if (this.state.ButtonGarbageBin) {
       swal(
-      <div>
-          <h2>{this.state.garbageCategoriesGarbage[index].title}</h2>
-        <p>
+        <div className = 'sweet'>
+          <p className='sweetTitle'>{this.state.garbageCategoriesGarbage[index].title}</p>
+          <p className='sweetCategory'>
             {this.state.garbageCategoriesGarbage[index].category}
           </p>
-        <p>
-            {this.state.garbageCategoriesGarbage[index].body}
+          <p className='sweetKey'>
+            {this.state.garbageCategoriesGarbage[index].keywords}
           </p>
-      </div>
+        </div>
       )
-    } else if (this.state.ButtonBlueBin){
+    } else {
       swal(
-        <div>
-          <h2>{this.state.garbageCategoriesBlueBin[index].title}</h2>
-          <p>
+        <div className='sweet'>
+          <p className='sweetTitle'>{this.state.garbageCategoriesBlueBin[index].title}</p>
+          <p className='sweetCategory'>
             {this.state.garbageCategoriesBlueBin[index].category}
           </p>
-          <p>
-            {this.state.garbageCategoriesBlueBin[index].body}
+          <p className='sweetKey'>
+            {this.state.garbageCategoriesBlueBin[index].keywords}
           </p>
         </div>
       )
     }
 
-    
-    
+
+
 
     this.setState({
       // garbageListToShow: this.state.garbageCategoriesGarbage
@@ -140,7 +147,7 @@ class App extends Component {
       // response.data.forEach((elt, i) => console.log(i, elt));
       response = response.data;
       // let category = this.categorySorter(response);
-      // console.log(this.categorySorter(response))
+      console.log(response)
 
       this.setState({
         garbageCategoriesAll: response,
@@ -156,27 +163,54 @@ class App extends Component {
 
     return (
       <div className='App'>
-
         {this.state.isLoading ? (
           //if this loading statement is false, info goes here
-          <p>Loading...</p>
+          <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+          </div>
         ) : (
+            <div className='body wrapper'>
+              <header className=''>
+                <div className="mainTitle">
+                  <h2>REDUCE</h2>
+                  <h2>REUSE</h2>
+                  <h1>RECYCLE</h1>
+                </div>
 
-            <ul>
+                <div className='underlay'>
+                  <div className='quoteBox1'>
+                    <blockquote>
+                    <h3>The Earth is a fine place and worth fighting for.</h3>
+                    <h4>-Ernest Hemingway</h4>
+                  </blockquote>
+                  </div>
+                  <div className='quoteBox2'>
+                    <blockquote>
+                      <h3>The greatest threat to our planet is the belief that someone else will save it.</h3>
+                      <h4>-Robert Swan</h4>
+                  </blockquote>
+                  </div>
+                  
+                </div>
 
-              {
-                <button onClick={this.handleClickForBlueBin}>BlueBin</button>
-              }
-              {
-                <button onClick={this.handleClickForGarbage}>Garbage</button>
-              }
+              </header>
+              <div className ='categorySelector'>
+                {
+                  <button onClick={this.handleClickForBlueBin}>BlueBin</button>
+                }
+                {
+                  <button onClick={this.handleClickForGarbage}>Garbage</button>
+                }
+              </div>
 
-              {this.state.garbageListToShow.map((category, i) => {
-                return (
-                  <li key={i} onClick={this.handleClickForItems.bind(this, i)}>{category.title}</li>
-                )
-              })}
-            </ul>
+              <ul>
+                {this.state.garbageListToShow.map((category, i) => {
+                  return (
+                    <li key={i} tabIndex ='0' onClick={this.handleClickForItems.bind(this, i)}>{category.title}</li>
+                  )
+                })}
+              </ul>
+            </div>
           )
         }
       </div>
