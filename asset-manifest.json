@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/robertChunProjectFive/static/css/main.931fb694.chunk.css",
+    "main.js": "/robertChunProjectFive/static/js/main.f2e3f4cd.chunk.js",
+    "main.js.map": "/robertChunProjectFive/static/js/main.f2e3f4cd.chunk.js.map",
+    "runtime~main.js": "/robertChunProjectFive/static/js/runtime~main.17404314.js",
+    "runtime~main.js.map": "/robertChunProjectFive/static/js/runtime~main.17404314.js.map",
+    "static/js/2.be1f9587.chunk.js": "/robertChunProjectFive/static/js/2.be1f9587.chunk.js",
+    "static/js/2.be1f9587.chunk.js.map": "/robertChunProjectFive/static/js/2.be1f9587.chunk.js.map",
+    "index.html": "/robertChunProjectFive/index.html",
+    "precache-manifest.fce78ec6fd35b448825ad0cf562193fc.js": "/robertChunProjectFive/precache-manifest.fce78ec6fd35b448825ad0cf562193fc.js",
+    "service-worker.js": "/robertChunProjectFive/service-worker.js",
+    "static/css/main.931fb694.chunk.css.map": "/robertChunProjectFive/static/css/main.931fb694.chunk.css.map",
+    "static/media/logo.svg": "/robertChunProjectFive/static/media/logo.27d3a59d.svg"
+  }
+}
