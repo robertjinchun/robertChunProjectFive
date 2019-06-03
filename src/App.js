@@ -4,6 +4,7 @@ import BlueBin from './BlueBin.js';
 import GarbageBin from './GarbageBin.js';
 import UpdateList from './UpdateList.js';
 import axios from 'axios';
+import swal from '@sweetalert/with-react'
 import './App.css';
 
 class App extends Component {
@@ -85,7 +86,8 @@ class App extends Component {
         acceptencoding: "gzip, deflate",
         cachecontrol: "no-cache"
       }
-    }).then((response) => {
+    })
+    .then((response) => {
       response = response.data;
       this.setState({
         garbageCategoriesAll: response,
@@ -93,6 +95,13 @@ class App extends Component {
         garbageCategoriesGarbage: this.categorySorter(response, "garbage"),
         isLoading: false,
       })
+    })
+    .catch(function(error){
+      swal(
+        <div className='sweet'>
+          <p className='sweetTitle'>Please Refresh the Page</p>
+        </div>
+      )
     })
   }
   //refresh when setState is called

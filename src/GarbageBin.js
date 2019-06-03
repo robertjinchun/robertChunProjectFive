@@ -1,13 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
+// This is my component for the GarbageBin Button
+class GarbageBin extends Component {
 
-class GarbageBin extends Component{
-
+    // The event handler for Garbage bin
     handleClickForGarbageBin = (e) => {
         e.preventDefault();
         this.props.onhandleGarbageBinClicked(e.target.onClick);
-    } 
-    render(){
-        return(
+    }
+    render() {
+        return (
             <React.Fragment>
                 {
                     <button onClick={this.handleClickForGarbageBin}>Garbage</button>

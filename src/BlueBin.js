@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 
+// This is my component for blue bin button
 class BlueBin extends Component {
 
+    // event handler for the button click
     handleClickForBlueBin = (e) => {
         e.preventDefault();
         this.props.onhandleBlueBinClicked(e.target.onClick);
