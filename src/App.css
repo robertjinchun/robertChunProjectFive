@@ -1,35 +1,45 @@
 .App,
 .App-header {
-
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
+}
 
-    /* height:100vh; */
+.App,
+.App-header,
+.underlay,
+.mainTitle,
+header,
+ul {
+    display: flex;
+}
+
+.underlay,
+.mainTitle,
+.App,
+.App-header {
+    flex-direction: column;
 }
 
 .App {
     text-align: center;
+}
+
+.App,
+.underlay,
+header {
     height: 100vh;
     min-height: 650px;
     max-height: 800px;
-
 }
 
 .App-logo {
     animation: App-logo-spin infinite 20s linear;
     height: 40vmin;
     pointer-events: none;
-
 }
 
 .App-header {
     background-color: #f1fffa;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
     font-size: calc(10px + 2vmin);
     color: white;
@@ -41,17 +51,8 @@
 }
 
 .underlay {
-    /* text-align:center; */
-    height: 100vh;
-    min-height: 650px;
-    max-height: 800px;
-    /* padding:10% 0; */
     position: absolute;
-    display: flex;
-    flex-direction: column;
     justify-content: space-around;
-    /* max-width:1600px; */
-    /* width:100%; */
 }
 
 .quoteBox1 {
@@ -85,22 +86,11 @@ html {
 }
 
 header {
-    /* width:100%; */
-    /*text-align:center; */
-    height: 100vh;
-    max-height: 800px;
-    min-height: 650px;
-    display: flex;
     justify-content: center;
 }
 
 .mainTitle {
-    /* height: 100vh; */
-    /* position: absolute; */
-    display: flex;
-    flex-direction: column;
     justify-content: space-around;
-    /* padding:0 100%; */
 }
 
 h1,
@@ -120,6 +110,7 @@ h4 {
     line-height: 250%;
 }
 
+/* The spinning logo for my react project */
 @keyframes App-logo-spin {
     from {
         transform: rotate(0deg);
@@ -133,18 +124,11 @@ h4 {
 .wrapper {
     max-width: 1000px;
     min-width: 320px;
-    /* border: 3px solid black; */
 }
 
+/* Swal is for sweet alerts */
 .swal-overlay {
     background-color: rgba(156, 222, 159, 0.60);
-}
-
-.swal-title {
-    margin: 0px;
-    /* font-size: 30px; */
-    /* box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21); */
-    /* margin-bottom: 28px; */
 }
 
 .swal-text {
@@ -154,7 +138,10 @@ h4 {
     display: block;
     margin: 22px;
     text-align: center;
-    color: #61534e;
+}
+
+.swal-button {
+    background-color: rgba(6, 214, 160, 0.90);
 }
 
 .sweetTitle {
@@ -176,6 +163,16 @@ h4 {
     font-family: 'Josefin Slab', serif;
 }
 
+/* I had to do some more research to get these floating block quotes */
+blockquote:before,
+blockquote:after {
+    font-family: Arial, sans-serif;
+    font-style: normal;
+    position: absolute;
+    content: '\201C';
+    font-size: 82px;
+}
+
 blockquote {
     color: #2c3e50;
     font-size: 1.5rem;
@@ -187,30 +184,21 @@ blockquote {
 }
 
 blockquote:before {
-    content: '\201C';
-    position: absolute;
     top: -10px;
     left: 0;
-    font-family: Arial, sans-serif;
-    font-size: 82px;
-    font-style: normal;
 }
 
 blockquote:after {
-    content: '\201C';
-    position: absolute;
     bottom: -60px;
     right: 20px;
-    font-family: Arial, sans-serif;
-    font-size: 82px;
-    font-style: normal;
 }
 
+/* All the button decoration below. Credits to https://cssfx.dev/ */
 .categorySelector button {
     z-index: 1;
     margin: 4%;
     position: relative;
-    font-size: inherit;
+    font-size: 1.3rem;
     font-family: 'Josefin Slab', serif;
     color: #f1fffa;
     padding: 0.5em 10%;
@@ -247,28 +235,27 @@ blockquote:after {
     transform: translate(-50%, -50%) scale(15);
 }
 
+/* All the button decoration below. Credits to https://cssfx.dev/ */
 ul {
-    display: flex;
-    /* flex-direction:column; */
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
 }
 
-li {
+ul button {
     position: relative;
     font-family: 'Josefin Slab', serif;
     background-color: rgba(169, 251, 215, 0.50);
     color: #2c3e50;
-    /* font-weight:bold; */
+    font-size: 1.2rem;
     box-shadow: 5px 5px 10px;
     padding: 1.2%;
     margin: .8%;
     width: 30%;
 }
 
-li::before,
-li::after {
+ul button::before,
+ul button::after {
     content: '';
     position: absolute;
     left: 50%;
@@ -280,21 +267,22 @@ li::after {
     transition: transform 0.4s ease;
 }
 
-li::before {
+ul button::before {
     top: 0;
 }
 
-li::after {
+ul button::after {
     bottom: 0;
 }
 
-li:hover::before,
-li:hover::after,
-li:focus::before,
-li:focus::after {
+ul button:hover::before,
+ul button:hover::after,
+ul button:focus::before,
+ul button:focus::after {
     transform: translateX(-50%) scaleX(1);
 }
 
+/* Cutting down to 950px */
 @media (max-width: 950px) {
 
     h1,
@@ -311,6 +299,7 @@ li:focus::after {
     }
 }
 
+/* cutting down to 750px */
 @media (max-width: 750px) {
     .quoteBox1 {
         left: 0%;
@@ -329,13 +318,14 @@ li:focus::after {
     }
 }
 
+/* cutting down to 400px */
 @media (max-width: 400px) {
     ul {
         display: flex;
         flex-direction: column;
     }
 
-    li {
+    ul button {
         width: 70%
     }
 }

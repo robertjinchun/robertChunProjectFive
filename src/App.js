@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import swal from '@sweetalert/with-react'
-// import BlueBin from './BlueBin.js';
-// import GarbageBin from './GarbageBin.js';
+import BlueBin from './BlueBin.js';
+import GarbageBin from './GarbageBin.js';
+import UpdateList from './UpdateList.js';
 import axios from 'axios';
 import './App.css';
-
-
-
 
 class App extends Component {
   //Construcor which is kind of what it does??
   constructor() {
     super();
+
+    //the many states I used
     this.state = {
       isLoading: true,
       ButtonblueBin: false,
@@ -23,22 +22,18 @@ class App extends Component {
       garbageCategoriesGarbage: [],
       garbageListToShow: [],
     }
-    console.log('constructor');
   }
 
-
-  //I need to sort through my array of categories to find all the ones that have a blue Bin
+  //I need to sort through my array of categories to find all the items that either have a blue Bin or garbage
   categorySorter = (fullArray, sortType) => {
     const regexTruthygarbageTypeBlueBin = /blue.bin/gi;
     const regexTruthygarbageTypeGarbage = /garbage/gi;
     const regexCutBlueBin = /blue.bin|\(|\)/gi;
     const regexCutGarbage = /garbage|\(|\)/gi;
-
     const updatedCategoryArray = [];
-    // console.log(fullArray)
 
+    //the function I created to kind of filter through my array
     fullArray.map((item, i) => {
-      // console.log(item)
       if (sortType === 'blueBin') {
         if (regexTruthygarbageTypeBlueBin.exec(item.category)) {
           item.title = item.title.replace(regexCutBlueBin, '');
@@ -51,86 +46,33 @@ class App extends Component {
           updatedCategoryArray.push(item);
         }
       }
-
       return (
         updatedCategoryArray
       )
     })
-
     return (updatedCategoryArray)
   }
 
-  //I need to copy what array I need to show
-
-  handleClickForBlueBin = (event) => {
-    event.preventDefault();
-    console.log('hello')
+  //updates the required states when it is called
+  handleBlueBinClicked = (click1) => {
     this.setState({
       ButtonblueBin: true,
       ButtonGarbageBin: false,
-      garbageListToShow: this.state.garbageCategoriesBlueBin
-
-    })
+      blueBinClicked: click1
+    });
   }
-
-  handleClickForGarbage = (event) => {
-    event.preventDefault();
-    console.log('hello1')
+  //updates the required states when it is called
+  handleGarbageBinClicked = (click2) => {
     this.setState({
       ButtonblueBin: false,
       ButtonGarbageBin: true,
-      garbageListToShow: this.state.garbageCategoriesGarbage
-    })
-  }
-
-  handleInputBoxInput = (event) => {
-    this.setState({ title: event.target.value })
-  }
-
-  handleClickForItems = (index, event) => {
-    event.preventDefault();
-    // console.log(this.state.garbageCategoriesGarbage)
-    console.log(index);
-    console.log(this.state.ButtonblueBin);
-    console.log(this.state.GarbageBin);
-    if (this.state.ButtonGarbageBin) {
-      swal(
-        <div className = 'sweet'>
-          <p className='sweetTitle'>{this.state.garbageCategoriesGarbage[index].title}</p>
-          <p className='sweetCategory'>
-            {this.state.garbageCategoriesGarbage[index].category}
-          </p>
-          <p className='sweetKey'>
-            {this.state.garbageCategoriesGarbage[index].keywords}
-          </p>
-        </div>
-      )
-    } else {
-      swal(
-        <div className='sweet'>
-          <p className='sweetTitle'>{this.state.garbageCategoriesBlueBin[index].title}</p>
-          <p className='sweetCategory'>
-            {this.state.garbageCategoriesBlueBin[index].category}
-          </p>
-          <p className='sweetKey'>
-            {this.state.garbageCategoriesBlueBin[index].keywords}
-          </p>
-        </div>
-      )
-    }
-
-
-
-
-    this.setState({
-      // garbageListToShow: this.state.garbageCategoriesGarbage
+      garbageBinClicked: click2
     })
   }
 
   //This is where I should put my axios call
   componentDidMount() {
-    console.log('Mounted');
-    //created ajax request
+    //created Axios request
     axios({
       //The API has no other way of sending exact data. I need to call the whole database.
       url: 'https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=250',
@@ -144,11 +86,7 @@ class App extends Component {
         cachecontrol: "no-cache"
       }
     }).then((response) => {
-      // response.data.forEach((elt, i) => console.log(i, elt));
       response = response.data;
-      // let category = this.categorySorter(response);
-      console.log(response)
-
       this.setState({
         garbageCategoriesAll: response,
         garbageCategoriesBlueBin: this.categorySorter(response, "blueBin"),
@@ -157,18 +95,19 @@ class App extends Component {
       })
     })
   }
-
   //refresh when setState is called
   render() {
-
     return (
       <div className='App'>
+        
         {this.state.isLoading ? (
           //if this loading statement is false, info goes here
           <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
           </div>
         ) : (
+
+          //the main bulk of the program under here
             <div className='body wrapper'>
               <header className=''>
                 <div className="mainTitle">
@@ -180,36 +119,40 @@ class App extends Component {
                 <div className='underlay'>
                   <div className='quoteBox1'>
                     <blockquote>
-                    <h3>The Earth is a fine place and worth fighting for.</h3>
-                    <h4>-Ernest Hemingway</h4>
-                  </blockquote>
+                      <h3>The Earth is a fine place and worth fighting for.</h3>
+                      <h4>-Ernest Hemingway</h4>
+                    </blockquote>
                   </div>
                   <div className='quoteBox2'>
                     <blockquote>
                       <h3>The greatest threat to our planet is the belief that someone else will save it.</h3>
                       <h4>-Robert Swan</h4>
-                  </blockquote>
+                    </blockquote>
                   </div>
-                  
                 </div>
-
               </header>
-              <div className ='categorySelector'>
+              <div className='categorySelector'>
+                {/* calls the blueBin button */}
                 {
-                  <button onClick={this.handleClickForBlueBin}>BlueBin</button>
+                  <BlueBin className = 'blueButton'
+                    mass={this.state}
+                    onhandleBlueBinClicked={this.handleBlueBinClicked}
+                  />
                 }
+                {/* calls the Garbage button */}
                 {
-                  <button onClick={this.handleClickForGarbage}>Garbage</button>
+                  <GarbageBin className='garbageButton'
+                    mass={this.state}
+                    onhandleGarbageBinClicked={this.handleGarbageBinClicked}
+                  />
                 }
               </div>
 
-              <ul>
-                {this.state.garbageListToShow.map((category, i) => {
-                  return (
-                    <li key={i} tabIndex ='0' onClick={this.handleClickForItems.bind(this, i)}>{category.title}</li>
-                  )
-                })}
-              </ul>
+              <div>
+                {/* calls the Updated list */}
+                <UpdateList
+                  mass={this.state} />
+              </div>
             </div>
           )
         }
